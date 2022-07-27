@@ -1,7 +1,0 @@
-[27-Jul-2022 13:01:38 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function set_title() in C:\Users\iren\Local Sites\fictional-university\app\public\wp-content\themes\fictional-university-theme\page.php:12
-Stack trace:
-#0 C:\Users\iren\Local Sites\fictional-university\app\public\wp-includes\template-loader.php(106): include()
-#1 C:\Users\iren\Local Sites\fictional-university\app\public\wp-blog-header.php(19): require_once('C:\\Users\\iren\\L...')
-#2 C:\Users\iren\Local Sites\fictional-university\app\public\index.php(17): require('C:\\Users\\iren\\L...')
-#3 {main}
-  thrown in C:\Users\iren\Local Sites\fictional-university\app\public\wp-content\themes\fictional-university-theme\page.php on line 12
