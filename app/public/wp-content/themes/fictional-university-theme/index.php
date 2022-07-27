@@ -31,7 +31,10 @@
                     <p><a class="btn btn--blue" href="<?php the_permalink(); ?>">Continue reading &raquo</a></p>
                 </div>
             </div>
-    <?php } ?>
+    <?php } 
+        // PAGINATION
+        echo paginate_links();
+    ?>
 </div>
 
 <?php get_footer(); ?>
