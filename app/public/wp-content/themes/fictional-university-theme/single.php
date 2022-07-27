@@ -1,5 +1,7 @@
 <?php
 
+    get_header();
+
     while(have_posts()) {
         the_post(); ?>
         <!-- create a link for the title of the post -->
@@ -7,5 +9,7 @@
         <!-- print content of the post -->
         <?php the_content(); ?>
     <?php }
+
+    get_footer();
 
 ?>

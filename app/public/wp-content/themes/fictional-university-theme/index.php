@@ -1,4 +1,7 @@
-<?php
+<!-- get_header and get_footer functions add header and footer from header.php and footer.php file in the main index.php file -->
+<?php 
+
+    get_header();
 
     while(have_posts()) {
         the_post(); ?>
@@ -8,5 +11,7 @@
         <?php the_content(); ?>
         <hr>
     <?php }
+
+    get_footer();
 
 ?>
