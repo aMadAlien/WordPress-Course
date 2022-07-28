@@ -2,7 +2,7 @@
 
 <!-- main screen -->
 <div class="page-banner">
-    <!-- the pic into 1st (Privacy Policy) section) -->
+    <!-- the pic into 1st section -->
     <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg'); ?>)"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">All Events</h1>
@@ -16,7 +16,7 @@
     <?php
         while(have_posts()) {
             the_post(); ?>
-
+            <!-- THE EVENT -->
             <div class="event-summary">
                 <a class="event-summary__date t-center" href="#">
                     <span class="event-summary__month"><?php the_time('M'); ?></span>
@@ -27,8 +27,6 @@
                     <p><?php echo wp_trim_words(get_the_content(), 18); ?><a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
                 </div>
             </div>
-
-
     <?php } 
         // PAGINATION
         echo paginate_links();

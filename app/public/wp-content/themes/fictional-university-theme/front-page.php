@@ -1,6 +1,6 @@
 <!-- get_header and get_footer functions add header and footer from header.php and footer.php file in the main index.php file -->
 <?php get_header(); ?>
-
+    <!-- MAIN SCREEN -->
     <div class="page-banner">
         <!-- the pic into 1st (welcome) section -->
         <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('/images/library-hero.jpg'); ?>)"></div>
@@ -22,6 +22,7 @@
                 <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
 
                 <?php
+                    // present necessary amount of the posts
                     $homepageEvents = new WP_Query(array(
                         'posts_per_page' => 2,
                         'post_type' => 'event'
@@ -29,12 +30,17 @@
 
                     while($homepageEvents -> have_posts()) {
                         $homepageEvents -> the_post(); ?>
-
+                        <!-- THE EVENT -->
                         <div class="event-summary">
+                            <!-- THE TIME 
+                                the event was published and a link for it -->
                             <a class="event-summary__date t-center" href="#">
                                 <span class="event-summary__month"><?php the_time('M'); ?></span>
                                 <span class="event-summary__day"><?php the_time('d'); ?></span>
                             </a>
+                            <!-- EVENT CONTENT
+                                wp_trim_words() func presents necessary amount of posts words
+                                get_the_content() func presents posts content -->
                             <div class="event-summary__content">
                                 <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
                                 <p><?php echo wp_trim_words(get_the_content(), 18); ?><a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
@@ -54,22 +60,20 @@
             <div class="full-width-split__inner">
                 <h2 class="headline headline--small-plus t-center">From Our Blogs</h2>
                 <?php 
-                    // present necessary amount of the post
+                    // present necessary amount of the posts
                     $homepagePosts = new  WP_Query(array(
                         'posts_per_page' => 2,
                     ));
-
+                    // THE POST
                     while($homepagePosts -> have_posts()) {
                         $homepagePosts -> the_post(); ?>
                         <div class="event-summary">
-                            <!-- presents time the post was published and a link for it -->
+                            <!-- THE TIME -->
                             <a class="event-summary__date event-summary__date--beige t-center" href="<?php the_permalink(); ?>">
                                 <span class="event-summary__month"><?php the_time('M'); ?></span>
                                 <span class="event-summary__day"><?php the_time('d'); ?></span>
                             </a>
-                            <!-- posts content 
-                                wp_trim_words() func presents necessary amount of posts words
-                                get_the_content() func presents posts content -->
+                            <!-- POST CONTENT -->
                             <div class="event-summary__content">
                                 <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
                                 <p><?php echo wp_trim_words(get_the_content(), 18); ?><a href="<?php the_permalink(); ?>" class="nu gray">Read more</a></p>

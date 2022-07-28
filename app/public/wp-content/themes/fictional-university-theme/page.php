@@ -2,9 +2,9 @@
     while(have_posts()) {
         the_post(); ?>
 
-    <!-- main screen -->
+    <!-- MAIN SCREEN -->
     <div class="page-banner">
-        <!-- the pic into 1st (Privacy Policy) section) -->
+        <!-- the pic into 1st section -->
         <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg'); ?>)"></div>
         <div class="page-banner__content container container--narrow">
             <h1 class="page-banner__title"><?php echo the_title(); ?></h1>
@@ -31,7 +31,7 @@
 
         <!-- MENU SIDEBAR -->
         <?php 
-        // get list of pages but only in memory
+        // retrieves list(array) of pages (but only in memory)
         $testArray = get_pages(array(
             'child_of' => get_the_ID() 
         ));
@@ -43,14 +43,14 @@
             <ul class="min-list">
                 <?php
 
-                // children page-links will appear depending on parent
+                    // children page-links will appear depending on parent
                     if($theParent) {
                         $findChildrenOf = $theParent;
                     } else {
                         $findChildrenOf = get_the_ID();
                     }
 
-                    // get and print list of the pages
+                    // retrieves and displays list of the pages
                     wp_list_pages(array(
                         // remote work 'Pages'
                         'title_li' => NULL,
@@ -64,6 +64,7 @@
         </div>
         <?php } ?>
 
+        <!-- THE PAGE CONTENT -->
         <div class="generic-content">
             <?php the_content(); ?>
         </div>
