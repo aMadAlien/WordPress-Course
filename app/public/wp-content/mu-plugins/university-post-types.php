@@ -5,6 +5,8 @@
 // change its icon to 'dashicons-calendar'
 function university_post_types(){
     register_post_type('event', array(
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor', 'excerpt'),
         // change 'event' to 'events' in url address
         'rewrite' => array('slug' => 'events'),
         // make events avaliable
