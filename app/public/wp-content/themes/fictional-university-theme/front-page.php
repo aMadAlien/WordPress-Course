@@ -1,6 +1,6 @@
 <!-- get_header and get_footer functions add header and footer from header.php and footer.php file in the main index.php file -->
 <?php get_header(); ?>
-
+    <!-- MAIN SCREEN -->
     <div class="page-banner">
         <!-- the pic into 1st (welcome) section -->
         <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('/images/library-hero.jpg'); ?>)"></div>
@@ -14,57 +14,95 @@
     </div>
 
     <!-- START THE CONTENT SECTION -->
+
+    <!-- STATRT THE EVENTS-LIST SECTION -->
     <div class="full-width-split group">
         <div class="full-width-split__one">
             <div class="full-width-split__inner">
                 <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
-                <div class="event-summary">
-                    <a class="event-summary__date t-center" href="#">
-                        <span class="event-summary__month">Mar</span>
-                        <span class="event-summary__day">25</span>
-                    </a>
-                    <div class="event-summary__content">
-                        <h5 class="event-summary__title headline headline--tiny"><a href="#">Poetry in the 100</a></h5>
-                        <p>Bring poems you&rsquo;ve wrote to the 100 building this Tuesday for an open mic and snacks. <a href="#" class="nu gray">Learn more</a></p>
-                    </div>
-                </div>
-                <div class="event-summary">
-                    <a class="event-summary__date t-center" href="#">
-                        <span class="event-summary__month">Apr</span>
-                        <span class="event-summary__day">02</span>
-                    </a>
-                    <div class="event-summary__content">
-                        <h5 class="event-summary__title headline headline--tiny"><a href="#">Quad Picnic Party</a></h5>
-                        <p>Live music, a taco truck and more can found in our third annual quad picnic day. <a href="#" class="nu gray">Learn more</a></p>
-                    </div>
-                </div>
-                <p class="t-center no-margin"><a href="#" class="btn btn--blue">View All Events</a></p>
-            </div>
-        </div>
 
-        <div class="full-width-split__two">
-            <div class="full-width-split__inner">
-                <h2 class="headline headline--small-plus t-center">From Our Blogs</h2>
                 <?php 
-                    // present necessary amount of the post
-                    $homepagePosts = new  WP_Query(array(
+                    $today = date('Ymd');
+                    $homepageEvents = new WP_Query(array(
                         'posts_per_page' => 2,
-                    ));
+                        'post_type' => 'event',
+                        'meta_key' => 'event_date',
+                        'orderby' => 'meta_value_num',
+                        'order' => 'ASC',
+                        'meta_query' => array(
+                        array(
+                            'key' => 'event_date',
+                            'compare' => '>=',
+                            'value' => $today,
+                            'type' => 'numeric'
+                        )
+                    )
+                ));
 
-                    while($homepagePosts -> have_posts()) {
-                        $homepagePosts -> the_post(); ?>
+                    while($homepageEvents -> have_posts()) {
+                        $homepageEvents -> the_post(); ?>
+                        <!-- THE EVENT -->
                         <div class="event-summary">
-                            <!-- presents time the post was published and a link for it -->
-                            <a class="event-summary__date event-summary__date--beige t-center" href="<?php the_permalink(); ?>">
-                                <span class="event-summary__month"><?php the_time('M'); ?></span>
-                                <span class="event-summary__day"><?php the_time('d'); ?></span>
+                            <!-- THE TIME 
+                                the event was published and a link for it -->
+                            <a class="event-summary__date t-center" href="#">
+                                <span class="event-summary__month"><?php 
+                                    $eventDate = new DateTime(get_field('event_date'));
+                                    echo $eventDate -> format('M');
+                                ?></span>
+                                <span class="event-summary__day"><?php echo $eventDate -> format('d'); ?></span>
                             </a>
-                            <!-- posts content 
+                            <!-- EVENT CONTENT
                                 wp_trim_words() func presents necessary amount of posts words
                                 get_the_content() func presents posts content -->
                             <div class="event-summary__content">
                                 <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-                                <p><?php echo wp_trim_words(get_the_content(), 18); ?><a href="<?php the_permalink(); ?>" class="nu gray">Read more</a></p>
+                                <p><?php if(has_excerpt()) {
+                                    // for changed excerpt in WordPress for some special
+                                    echo get_the_excerpt();
+                                } else {
+                                    echo wp_trim_words(get_the_content(), 18);
+                                }
+                                ?><a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
+                            </div>
+                        </div>
+
+                    <?php }
+                ?>
+
+
+                <p class="t-center no-margin"><a href="<?php echo get_post_type_archive_link('event'); ?>" class="btn btn--blue">View All Events</a></p>
+            </div>
+        </div>
+
+        <!-- START THE BLOG-LIST SECTION -->
+        <div class="full-width-split__two">
+            <div class="full-width-split__inner">
+                <h2 class="headline headline--small-plus t-center">From Our Blogs</h2>
+                <?php 
+                    // present necessary amount of the posts
+                    $homepagePosts = new  WP_Query(array(
+                        'posts_per_page' => 2,
+                    ));
+                    // THE POST
+                    while($homepagePosts -> have_posts()) {
+                        $homepagePosts -> the_post(); ?>
+                        <div class="event-summary">
+                            <!-- THE TIME -->
+                            <a class="event-summary__date event-summary__date--beige t-center" href="<?php the_permalink(); ?>">
+                                <span class="event-summary__month"><?php the_time('M'); ?></span>
+                                <span class="event-summary__day"><?php the_time('d'); ?></span>
+                            </a>
+                            <!-- POST CONTENT -->
+                            <div class="event-summary__content">
+                                <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
+                                <p><?php if(has_excerpt()) {
+                                    // for changed excerpt in WordPress for some special
+                                    echo get_the_excerpt();
+                                } else {
+                                    echo wp_trim_words(get_the_content(), 18);
+                                }
+                                ?><a href="<?php the_permalink(); ?>" class="nu gray">Read more</a></p>
                             </div>
                         </div>
                     <!-- after looping through a separate query, this function restores the $post global to the current post in the main query. -->
@@ -75,6 +113,7 @@
         </div>
     </div>
 
+    <!-- START THE SLIDER SECTION -->
     <div class="hero-slider">
         <div data-glide-el="track" class="glide__track">
             <div class="glide__slides">
