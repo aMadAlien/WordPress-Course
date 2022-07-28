@@ -5,6 +5,11 @@
 // change its icon to 'dashicons-calendar'
 function university_post_types(){
     register_post_type('event', array(
+        // change 'event' to 'events' in url address
+        'rewrite' => array('slug' => 'events'),
+        // make events avaliable
+        'has_archive' => true,
+        
         'public' => true,
         'show_in_rest' => true,
         'labels' => array(
