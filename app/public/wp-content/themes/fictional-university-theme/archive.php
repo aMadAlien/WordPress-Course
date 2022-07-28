@@ -1,27 +1,27 @@
 <?php get_header(); ?>
 
-<!-- main screen -->
+<!-- MAIN SCREEN -->
 <div class="page-banner">
-    <!-- the pic into 1st (Privacy Policy) section) -->
+    <!-- the pic into 1st section -->
     <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg'); ?>)"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">
-            <!-- the_archive_title() func present necessary info (category, author, date) -->
+            <!-- THE POST TITLE (CATEGORY OR AUTHOR) -->
             <?php the_archive_title(); ?>
 
             <!-- check if the page is for authors or categories
             <?php if(is_category()) {
-            // print the title of the category
+            // THE TITLE OF THE CATEGORY
             single_cat_title();
             };
             if(is_author()) {
-                // print the name of the author
+                // NAME OF THE AUTHOR
                 echo 'Posts by '; the_author();
             }; ?> -->
         </h1>
         <div class="page-banner__intro">
             <p>
-                <!-- add descroption about the page/post -->
+                <!-- DESCRIPTION ABOUT THE AUTHOR -->
                 <?php the_archive_description(); ?>
             </p>
         </div>
