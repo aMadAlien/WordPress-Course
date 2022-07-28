@@ -35,8 +35,11 @@
                             <!-- THE TIME 
                                 the event was published and a link for it -->
                             <a class="event-summary__date t-center" href="#">
-                                <span class="event-summary__month"><?php the_time('M'); ?></span>
-                                <span class="event-summary__day"><?php the_time('d'); ?></span>
+                                <span class="event-summary__month"><?php 
+                                    $eventDate = new DateTime(get_field('event_date'));
+                                    echo $eventDate -> format('M');
+                                ?></span>
+                                <span class="event-summary__day"><?php echo $eventDate -> format('d'); ?></span>
                             </a>
                             <!-- EVENT CONTENT
                                 wp_trim_words() func presents necessary amount of posts words
