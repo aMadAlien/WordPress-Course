@@ -48,7 +48,7 @@ function university_post_types(){
     // PROFESSOR POST TYPE
     register_post_type('professor', array(
         // add excerpt field in WordPress settings
-        'supports' => array('title', 'editor'),
+        'supports' => array('title', 'editor', 'thumbnail'),
         
         'public' => true,
         'show_in_rest' => true,

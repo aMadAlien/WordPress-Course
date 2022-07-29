@@ -18,7 +18,17 @@
             <!-- THE PROFESSOR -->
             <div class="container container--narrow page-section">
                 <!-- THE PROFESSOR CONTENT -->
-                <div class="gereric-content"><?php the_content(); ?>
+                <div class="gereric-content">
+                    <div class="row group">
+                        <!-- PROFESSOR`S PHOTO -->
+                        <div class="one-third">
+                            <?php the_post_thumbnail(); ?>
+                        </div>
+                        <div class="two-third">
+                            <?php the_content(); ?>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- RELATIVE PROGRAMS SECTION -->
                     <?php 

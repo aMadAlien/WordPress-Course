@@ -16,15 +16,20 @@ function university_files(){
 add_action('wp_enqueue_scripts', 'university_files');
 
 
-// automatically change the title of the tab
 function university_features(){
+    // automatically change the title of the tab
     add_theme_support('title-tag');
+    // automatically change the professor`s photo in the page
+    add_theme_support('post-thumbnails');
+    // change size of the professor`s photo
+    add_image_size('proefssorLandscape', 400, 260, true);
+    add_image_size('professorPortrait', 480, 650, true);
 }
 
 add_action('after_setup_theme', 'university_features');
 
 
-// 
+// created relations -?
 function university_adjust_queries($query) {
     if (!is_admin() AND is_post_type_archive('program') AND is_main_query()) {
         $query -> set('orderby', 'title');
