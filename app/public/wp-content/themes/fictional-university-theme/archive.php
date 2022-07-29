@@ -1,32 +1,11 @@
-<?php get_header(); ?>
-
-<!-- MAIN SCREEN -->
-<div class="page-banner">
-    <!-- the pic into 1st section -->
-    <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg'); ?>)"></div>
-    <div class="page-banner__content container container--narrow">
-        <h1 class="page-banner__title">
-            <!-- THE POST TITLE (CATEGORY OR AUTHOR) -->
-            <?php the_archive_title(); ?>
-
-            <!-- check if the page is for authors or categories
-            <?php if(is_category()) {
-            // THE TITLE OF THE CATEGORY
-            single_cat_title();
-            };
-            if(is_author()) {
-                // NAME OF THE AUTHOR
-                echo 'Posts by '; the_author();
-            }; ?> -->
-        </h1>
-        <div class="page-banner__intro">
-            <p>
-                <!-- DESCRIPTION ABOUT THE AUTHOR -->
-                <?php the_archive_description(); ?>
-            </p>
-        </div>
-    </div>
-</div>
+<?php 
+get_header(); 
+// MAIN SCREEN
+pageBanner(array(
+    'title' => get_the_archive_title(),
+    'subtitle' => get_the_archive_description()
+));
+?>
 
 <div class="container container--narrow page-section">
     <?php
