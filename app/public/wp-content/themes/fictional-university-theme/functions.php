@@ -22,7 +22,7 @@ function university_features(){
     // automatically change the professor`s photo in the page
     add_theme_support('post-thumbnails');
     // change size of the professor`s photo
-    add_image_size('proefssorLandscape', 400, 260, true);
+    add_image_size('professorLandscape', 400, 260, true);
     add_image_size('professorPortrait', 480, 650, true);
 }
 

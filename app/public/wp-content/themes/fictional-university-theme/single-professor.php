@@ -22,7 +22,7 @@
                     <div class="row group">
                         <!-- PROFESSOR`S PHOTO -->
                         <div class="one-third">
-                            <?php the_post_thumbnail(); ?>
+                            <?php the_post_thumbnail('professorPortrait'); ?>
                         </div>
                         <div class="two-third">
                             <?php the_content(); ?>
