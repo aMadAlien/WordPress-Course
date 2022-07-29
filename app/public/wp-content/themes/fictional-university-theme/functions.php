@@ -24,6 +24,7 @@ function university_features(){
     // change size of the professor`s photo
     add_image_size('professorLandscape', 400, 260, true);
     add_image_size('professorPortrait', 480, 650, true);
+    add_image_size('pageBanner', 1500, 359, true);
 }
 
 add_action('after_setup_theme', 'university_features');
