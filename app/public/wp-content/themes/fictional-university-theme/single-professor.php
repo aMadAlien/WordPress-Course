@@ -3,18 +3,10 @@
     get_header();
 
     while(have_posts()) {
-        the_post(); ?>
-            <!-- MAIN SCREEN -->
-            <div class="page-banner">
-                <!-- the pic into 1st section -->
-                <div class="page-banner__bg-image" style="background-image: url(<?php $pageBannerImage = get_field('page_banner_background_image'); echo $pageBannerImage['sizes']['pageBanner'] ?>);"></div>
-                <div class="page-banner__content container container--narrow">
-                    <h1 class="page-banner__title"><?php echo the_title(); ?></h1>
-                    <div class="page-banner__intro">
-                        <p><?php the_field('page_banner_subtitle') ?></p>
-                    </div>
-                </div>
-            </div>
+        the_post(); 
+            // MAIN SCREEN (in function)
+            pageBanner();
+            ?>
             <!-- THE PROFESSOR -->
             <div class="container container--narrow page-section">
                 <!-- THE PROFESSOR CONTENT -->
