@@ -29,9 +29,9 @@ function university_post_types(){
     register_post_type('program', array(
         // add excerpt field in WordPress settings
         'supports' => array('title', 'editor'),
-        // change 'event' to 'events' in url address
+        // change 'program' to 'programs' in url address
         'rewrite' => array('slug' => 'programs'),
-        // make events avaliable
+        // make programs avaliable
         'has_archive' => true,
         
         'public' => true,
@@ -44,6 +44,22 @@ function university_post_types(){
             'singular_name' => 'Programs'
         ),
         'menu_icon' => 'dashicons-awards'
+    ));
+    // PROFESSOR POST TYPE
+    register_post_type('professor', array(
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor'),
+        
+        'public' => true,
+        'show_in_rest' => true,
+        'labels' => array(
+            'name' => 'Professors',
+            'add_new_item' => 'Add New Professor',
+            'edit_item' => 'Edit Professor',
+            'all_items' => 'All Professors',
+            'singular_name' => 'Professors'
+        ),
+        'menu_icon' => 'dashicons-welcome-learn-more'
     ));
 }
 
