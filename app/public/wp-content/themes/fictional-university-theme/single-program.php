@@ -52,6 +52,12 @@
                         )
                     ));
 
+                    // check if the program has some relations
+                    if ($homepageEvents -> have_posts()) {
+                        
+                    echo '<hr class="section-break">';
+                    echo '<h2 class="headline headline--medium" >Upcomig ' . get_the_title() . ' Events</h2>';
+
                     while($homepageEvents -> have_posts()) {
                         $homepageEvents -> the_post(); ?>
                         <!-- THE EVENT -->
@@ -80,6 +86,7 @@
                             </div>
                         </div>
                     <?php }
+                    }
                 ?>
 
             </div>
