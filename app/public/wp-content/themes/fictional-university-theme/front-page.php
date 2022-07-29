@@ -9,7 +9,7 @@
             <h1 class="headline headline--large">Welcome!</h1>
             <h2 class="headline headline--medium">We think you&rsquo;ll like it here.</h2>
             <h3 class="headline headline--small">Why don&rsquo;t you check out the <strong>major</strong> you&rsquo;re interested in?</h3>
-            <a href="#" class="btn btn--large btn--blue">Find Your Major</a>
+            <a href="<?php echo get_post_type_archive_link('program'); ?>" class="btn btn--large btn--blue">Find Your Major</a>
         </div>
     </div>
 
@@ -21,12 +21,23 @@
             <div class="full-width-split__inner">
                 <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
 
-                <?php
-                    // present necessary amount of the posts
+                <?php 
+                    $today = date('Ymd');
                     $homepageEvents = new WP_Query(array(
                         'posts_per_page' => 2,
-                        'post_type' => 'event'
-                    ));
+                        'post_type' => 'event',
+                        'meta_key' => 'event_date',
+                        'orderby' => 'meta_value_num',
+                        'order' => 'ASC',
+                        'meta_query' => array(
+                        array(
+                            'key' => 'event_date',
+                            'compare' => '>=',
+                            'value' => $today,
+                            'type' => 'numeric'
+                        )
+                    )
+                ));
 
                     while($homepageEvents -> have_posts()) {
                         $homepageEvents -> the_post(); ?>
@@ -35,15 +46,24 @@
                             <!-- THE TIME 
                                 the event was published and a link for it -->
                             <a class="event-summary__date t-center" href="#">
-                                <span class="event-summary__month"><?php the_time('M'); ?></span>
-                                <span class="event-summary__day"><?php the_time('d'); ?></span>
+                                <span class="event-summary__month"><?php 
+                                    $eventDate = new DateTime(get_field('event_date'));
+                                    echo $eventDate -> format('M');
+                                ?></span>
+                                <span class="event-summary__day"><?php echo $eventDate -> format('d'); ?></span>
                             </a>
                             <!-- EVENT CONTENT
                                 wp_trim_words() func presents necessary amount of posts words
                                 get_the_content() func presents posts content -->
                             <div class="event-summary__content">
                                 <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-                                <p><?php echo wp_trim_words(get_the_content(), 18); ?><a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
+                                <p><?php if(has_excerpt()) {
+                                    // for changed excerpt in WordPress for some special
+                                    echo get_the_excerpt();
+                                } else {
+                                    echo wp_trim_words(get_the_content(), 18);
+                                }
+                                ?><a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
                             </div>
                         </div>
 
@@ -51,7 +71,7 @@
                 ?>
 
 
-                <p class="t-center no-margin"><a href="#" class="btn btn--blue">View All Events</a></p>
+                <p class="t-center no-margin"><a href="<?php echo get_post_type_archive_link('event'); ?>" class="btn btn--blue">View All Events</a></p>
             </div>
         </div>
 
@@ -76,7 +96,13 @@
                             <!-- POST CONTENT -->
                             <div class="event-summary__content">
                                 <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-                                <p><?php echo wp_trim_words(get_the_content(), 18); ?><a href="<?php the_permalink(); ?>" class="nu gray">Read more</a></p>
+                                <p><?php if(has_excerpt()) {
+                                    // for changed excerpt in WordPress for some special
+                                    echo get_the_excerpt();
+                                } else {
+                                    echo wp_trim_words(get_the_content(), 18);
+                                }
+                                ?><a href="<?php the_permalink(); ?>" class="nu gray">Read more</a></p>
                             </div>
                         </div>
                     <!-- after looping through a separate query, this function restores the $post global to the current post in the main query. -->

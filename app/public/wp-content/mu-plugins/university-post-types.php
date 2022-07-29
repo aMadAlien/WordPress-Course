@@ -4,7 +4,10 @@
 // change its name to 'Events' and etc.
 // change its icon to 'dashicons-calendar'
 function university_post_types(){
+    // EVENT POST TYPE
     register_post_type('event', array(
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor', 'excerpt'),
         // change 'event' to 'events' in url address
         'rewrite' => array('slug' => 'events'),
         // make events avaliable
@@ -20,6 +23,43 @@ function university_post_types(){
             'singular_name' => 'Event'
         ),
         'menu_icon' => 'dashicons-calendar'
+    ));
+
+    // PROGRAM POST TYPE
+    register_post_type('program', array(
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor'),
+        // change 'program' to 'programs' in url address
+        'rewrite' => array('slug' => 'programs'),
+        // make programs avaliable
+        'has_archive' => true,
+        
+        'public' => true,
+        'show_in_rest' => true,
+        'labels' => array(
+            'name' => 'Programs',
+            'add_new_item' => 'Add New Program',
+            'edit_item' => 'Edit Program',
+            'all_items' => 'All Programs',
+            'singular_name' => 'Programs'
+        ),
+        'menu_icon' => 'dashicons-awards'
+    ));
+    // PROFESSOR POST TYPE
+    register_post_type('professor', array(
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor', 'thumbnail'),
+        
+        'public' => true,
+        'show_in_rest' => true,
+        'labels' => array(
+            'name' => 'Professors',
+            'add_new_item' => 'Add New Professor',
+            'edit_item' => 'Edit Professor',
+            'all_items' => 'All Professors',
+            'singular_name' => 'Professors'
+        ),
+        'menu_icon' => 'dashicons-welcome-learn-more'
     ));
 }
 
