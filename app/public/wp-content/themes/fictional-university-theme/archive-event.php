@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<!-- main screen -->
+<!-- MAIN SCREEN -->
 <div class="page-banner">
     <!-- the pic into 1st section -->
     <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg'); ?>)"></div>
