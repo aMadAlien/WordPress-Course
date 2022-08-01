@@ -4048,8 +4048,6 @@ class Search {
       this.resultsDiv.html(`
                 <div class="row">
                 <div class="one-third">
-
-                    // GENERAL INFO
                     <h2 class="search-overlay__section-title">General Info</h2>
                         ${results.generalInfo.length ? '<ul class="link=list min-list">' : '<p>No generalinfo matches that search.</p>'}
                             ${results.generalInfo.map(item => `<li><a href="${item.permalink}">${item.title}</a> ${item.postType == 'post' ? `by ${item.authorName}` : ''}</li>`).join('')}
@@ -4057,13 +4055,11 @@ class Search {
                     </div>
                     <div class="one-third">
 
-                        // PROGRAMS
                         <h2 class="search-overlay__section-title">Programs</h2>
                             ${results.programs.length ? '<ul class="link-list min-list">' : `<p>No programs match that search. <a href="${universityData.root_url}/programs">View all programs</a></p>`}
                                 ${results.programs.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join("")}
                             ${results.programs.length ? "</ul>" : ""}
 
-                        // PROFESSORS
                         <h2 class="search-overlay__section-title">Professors</h2>
                         ${results.professors.length ? '<ul class="professor-cards">' : `<p>No professors match that search.</p>`}
                             ${results.professors.map(item => `
@@ -4077,7 +4073,6 @@ class Search {
                         ${results.professors.length ? "</ul>" : ""}
                     </div>
 
-                    // EVENTS
                     <div class="one-third">
                         <h2 class="search-overlay__section-title">Events</h2>
                         ${results.events.length ? '<ul class="professor-cards">' : `<p>No events match that search.  <a href="${universityData.root_url}/events">View all events</a></p>`}
