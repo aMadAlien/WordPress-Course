@@ -47,7 +47,8 @@ function universitySearchResults($data) {
         if(get_post_type() == 'program'){
             array_push($results['programs'], array(
                 'title' => get_the_title(),
-                'permalink' => get_the_permalink()
+                'permalink' => get_the_permalink(),
+                'id' => get_the_id()
             ));
         }
         if(get_post_type() == 'event'){
@@ -70,33 +71,42 @@ function universitySearchResults($data) {
         }
     }
 
-
-    //creates search logic that's aware of relationships
-    $programRelationshipQuery = new WP_Query(array(
-        'post_type' => 'professor',
-        'meta_query' => array(
-            array(
+    // checks if 'programs' exist in 'results' array and performs the code inside
+    if($results['programs']) {
+        // contains all programs (1 and more)
+        $programsMetaQuery = array('relation' => 'OR');
+        foreach($results['programs'] as $item) {
+            array_push($programsMetaQuery, array(
                 'key' => 'related_programs',
                 'compare' => 'LIKE',
-                'value' => '"55"'
-            )
-        )
-    ));
-
-    while($programRelationshipQuery -> have_posts()) {
-        $programRelationshipQuery -> the_post();
-
-        if(get_post_type() == 'professor'){
-            array_push($results['professors'], array(
-                'title' => get_the_title(),
-                'permalink' => get_the_permalink(),
-                'image' => get_the_post_thumbnail_url(0, 'professorLandscape')
+                'value' => '"' . $item['id'] . '"'
             ));
         }
+
+        //creates search logic that's aware of relationships
+        $programRelationshipQuery = new WP_Query(array(
+            'post_type' => 'professor',
+            // displays all necessary programs
+            'meta_query' => $programsMetaQuery
+        ));
+
+        while($programRelationshipQuery -> have_posts()) {
+            $programRelationshipQuery -> the_post();
+
+            if(get_post_type() == 'professor'){
+                array_push($results['professors'], array(
+                    'title' => get_the_title(),
+                    'permalink' => get_the_permalink(),
+                    'image' => get_the_post_thumbnail_url(0, 'professorLandscape')
+                ));
+            }
+        }
+
+        // sorts professors
+        $results['professors'] = array_values(array_unique($results['professors'], SORT_REGULAR));
     }
 
-    // sorts professors
-    $results['professors'] = array_values(array_unique($results['professors'], SORT_REGULAR));
+
 
     return $results;
 }
