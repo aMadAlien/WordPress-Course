@@ -1,5 +1,18 @@
 <?php
 
+// imports search-route.php file
+require get_theme_file_path('/includes/search-route.php');
+
+// add "authorName" : "name" into API array
+function university_custom_rest() {
+    register_rest_field('post', 'authorName', array(
+        'get_callback' => function() {return get_the_author();}
+    ));
+}
+
+add_action('rest_api_init', 'university_custom_rest');
+
+// dispalys the main screen
 function pageBanner($args = NULL) {
     if (!$args['title']) {
         $args['title'] = get_the_title();
