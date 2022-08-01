@@ -10,9 +10,10 @@ function universityRegisterSearch() {
 }
 
 // creates new custom raw JSON data
-function universitySearchResults() {
+function universitySearchResults($data) {
     $professors = new WP_Query(array(
-        'post_type' => 'professor'
+        'post_type' => 'professor',
+        's' => sanitize_text_field($data['term'])
     ));
 
     $professorResults = array();
@@ -26,5 +27,5 @@ function universitySearchResults() {
         ));
     }
 
-    return $professors -> posts;
+    return $professorResults;
 }
