@@ -4017,7 +4017,6 @@ class Search {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this));
     this.searchField.on("keyup", this.typingLogic.bind(this));
   } // 3. methods
-  // allows display results after some time(2s)
 
 
   typingLogic() {
@@ -4029,9 +4028,10 @@ class Search {
         if (!this.isSpinnerVisible) {
           this.resultsDiv.html('<div class="spinner-loader"</div>');
           this.isSpinnerVisible = true;
-        }
+        } // allows display results after some time(1.5s)
 
-        this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+
+        this.typingTimer = setTimeout(this.getResults.bind(this), 1500);
       } else {
         this.resultsDiv.html('');
         this.isSpinnerVisible = false;
@@ -4043,8 +4043,9 @@ class Search {
 
 
   getResults() {
-    this.resultsDiv.html("Imagine");
-    this.isSpinnerVisible = false;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON('http://fictional-university.local/wp-json/wp/v2/posts?search=' + this.searchField.val(), function (posts) {
+      alert(posts[0].title.rendered);
+    });
   } // check which key was pressed
 
 

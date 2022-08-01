@@ -24,18 +24,18 @@ class Search {
     }
 
   // 3. methods
-    // allows display results after some time(2s)
     typingLogic() {
         if(this.searchField.val() != this.prevValue) {
             clearTimeout(this.typingTimer);
-
+            
             if(this.searchField.val()) {
                 // displays spinner before results
                 if(!this.isSpinnerVisible) {
                     this.resultsDiv.html('<div class="spinner-loader"</div>');
                     this.isSpinnerVisible = true;
                 }
-                this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+                // allows display results after some time(1.5s)
+                this.typingTimer = setTimeout(this.getResults.bind(this), 1500);
             } else {
                 this.resultsDiv.html('');
                 this.isSpinnerVisible = false;
@@ -46,8 +46,9 @@ class Search {
 
     // displays results
     getResults() {
-        this.resultsDiv.html("Imagine");
-        this.isSpinnerVisible = false;
+        $.getJSON('http://fictional-university.local/wp-json/wp/v2/posts?search=' + this.searchField.val(), function(posts) {
+            alert(posts[0].title.rendered);
+        });
     }
 
     // check which key was pressed
