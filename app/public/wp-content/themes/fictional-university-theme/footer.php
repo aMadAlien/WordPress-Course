@@ -57,6 +57,7 @@
     </div>
 </footer>
 
+<!-- for search section -->
 <div class="search-overlay">
     <div class="search-overlay__top">
         <div class="container">

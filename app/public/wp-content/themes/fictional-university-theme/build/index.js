@@ -4001,8 +4001,10 @@ class Search {
     this.openBtn = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
     this.closeBtn = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
     this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
     this.events();
     this.isOverlayOpen = false;
+    this.typingTimer;
   } // 2. events
 
 
@@ -4010,7 +4012,16 @@ class Search {
     this.openBtn.on("click", this.openOverlay.bind(this));
     this.closeBtn.on("click", this.closeOverlay.bind(this));
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this));
+    this.searchField.on("keydown", this.typingLogic.bind(this));
   } // 3. methods
+
+
+  typingLogic() {
+    clearTimeout(this.typingTimer);
+    this.typingTimer = setTimeout(function () {
+      console.log("logic");
+    }, 2000);
+  } // check which key was pressed
 
 
   keyPressDispatcher(e) {
@@ -4021,13 +4032,15 @@ class Search {
     if (e.keyCode == 27 && this.isOverlayOpen) {
       this.closeOverlay();
     }
-  }
+  } // opens search
+
 
   openOverlay() {
     this.searchOverlay.addClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
     this.isOverlayOpen = true;
-  }
+  } // close search
+
 
   closeOverlay() {
     this.searchOverlay.removeClass("search-overlay--active");

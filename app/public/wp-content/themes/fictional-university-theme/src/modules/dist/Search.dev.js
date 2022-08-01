@@ -25,8 +25,10 @@ function () {
     this.openBtn = (0, _jquery["default"])(".js-search-trigger");
     this.closeBtn = (0, _jquery["default"])(".search-overlay__close");
     this.searchOverlay = (0, _jquery["default"])(".search-overlay");
+    this.searchField = (0, _jquery["default"])("#search-term");
     this.events();
     this.isOverlayOpen = false;
+    this.typingTimer;
   } // 2. events
 
 
@@ -36,7 +38,17 @@ function () {
       this.openBtn.on("click", this.openOverlay.bind(this));
       this.closeBtn.on("click", this.closeOverlay.bind(this));
       (0, _jquery["default"])(document).on("keydown", this.keyPressDispatcher.bind(this));
+      this.searchField.on("keydown", this.typingLogic.bind(this));
     } // 3. methods
+
+  }, {
+    key: "typingLogic",
+    value: function typingLogic() {
+      clearTimeout(this.typingTimer);
+      this.typingTimer = setTimeout(function () {
+        console.log("logic");
+      }, 2000);
+    } // check which key was pressed
 
   }, {
     key: "keyPressDispatcher",
@@ -48,14 +60,16 @@ function () {
       if (e.keyCode == 27 && this.isOverlayOpen) {
         this.closeOverlay();
       }
-    }
+    } // opens search
+
   }, {
     key: "openOverlay",
     value: function openOverlay() {
       this.searchOverlay.addClass("search-overlay--active");
       (0, _jquery["default"])("body").addClass("body-no-scroll");
       this.isOverlayOpen = true;
-    }
+    } // close search
+
   }, {
     key: "closeOverlay",
     value: function closeOverlay() {
