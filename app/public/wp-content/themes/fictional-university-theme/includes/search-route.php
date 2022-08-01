@@ -9,6 +9,22 @@ function universityRegisterSearch() {
     ));
 }
 
+// creates new custom raw JSON data
 function universitySearchResults() {
-    return 'your route';
+    $professors = new WP_Query(array(
+        'post_type' => 'professor'
+    ));
+
+    $professorResults = array();
+
+    // add something into array
+    while($professors -> have_posts()) {
+        $professors -> the_post();
+        array_push($professorResults, array(
+            'title' => get_the_title(),
+            'permalink' => get_the_permalink()
+        ));
+    }
+
+    return $professors -> posts;
 }
