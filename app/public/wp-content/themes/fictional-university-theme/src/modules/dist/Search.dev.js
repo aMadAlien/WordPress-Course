@@ -74,16 +74,14 @@ function () {
     value: function getResults() {
       var _this = this;
 
-      _jquery["default"].when(_jquery["default"].getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val()), _jquery["default"].getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchField.val())).then(function (posts, pages) {
-        var combinedResults = posts[0].concat(pages[0]);
-
-        _this.resultsDiv.html("\n                <h2 class=\"search-overlay__section-title\">General Info</h2>\n                ".concat(combinedResults.length ? '<ul class="link=list min-list">' : '<p>No generalinfo matches that search.</p>', "\n                    ").concat(combinedResults.map(function (item) {
-          return "<li><a href=\"".concat(item.link, "\">").concat(item.title.rendered, "</a> ").concat(item.type == 'post' ? "by ".concat(item.authorName) : '', "</li>");
-        }).join(''), "\n                ").concat(combinedResults.length ? '</ul>' : '', "\n                "));
+      _jquery["default"].getJSON(universityData.root_url + '/wp-json/university/v1/search?term=' + this.searchField.val(), function (results) {
+        _this.resultsDiv.html("\n                <div class=\"row\">\n                <div class=\"one-third\">\n                    <h2 class=\"search-overlay__section-title\">General Info</h2>\n                        ".concat(results.generalInfo.length ? '<ul class="link=list min-list">' : '<p>No generalinfo matches that search.</p>', "\n                            ").concat(results.generalInfo.map(function (item) {
+          return "<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a> ").concat(item.postType == 'post' ? "by ".concat(item.authorName) : '', "</li>");
+        }).join(''), "\n                        ").concat(results.generalInfo.length ? '</ul>' : '', "\n                    </div>\n                    <div class=\"one-third\">\n                        <h2 class=\"search-overlay__section-title\">Programs</h2>\n                            ").concat(results.programs.length ? '<ul class="link-list min-list">' : "<p>No programs match that search. <a href=\"".concat(universityData.root_url, "/programs\">View all programs</a></p>"), "\n                                ").concat(results.programs.map(function (item) {
+          return "<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>");
+        }).join(""), "\n                            ").concat(results.programs.length ? "</ul>" : "", "\n                        <h2 class=\"search-overlay__section-title\">Professors</h2>\n                    </div>\n                    <div class=\"one-third\">\n                        <h2 class=\"search-overlay__section-title\">Events</h2>\n                    </div>\n                </div>\n            "));
 
         _this.isSpinnerVisible = false;
-      }, function () {
-        _this.resultsDiv.html('<p>Unexpected error; please try again.</p>');
       });
     } // check which key was pressed
 
