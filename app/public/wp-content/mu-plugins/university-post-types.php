@@ -6,6 +6,9 @@
 function university_post_types(){
     // EVENT POST TYPE
     register_post_type('event', array(
+        // allows to create parmision to edit events for other members
+        'capability_type' => 'event',
+        'map_meta_cap' => true,
         // add excerpt field in WordPress settings
         'supports' => array('title', 'editor', 'excerpt'),
         // change 'event' to 'events' in url address
