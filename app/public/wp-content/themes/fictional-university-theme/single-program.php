@@ -18,7 +18,7 @@
                     </p>
                 </div>
                 <!-- THE PROGRAM CONTENT -->
-                <div class="gereric-content"><?php the_content(); ?></div>
+                <div class="gereric-content"><?php the_field('main_body_content'); ?></div>
                 
                 <?php 
                     // THE RELATED PROFESSORS
