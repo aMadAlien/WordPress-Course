@@ -44,7 +44,7 @@ function university_post_types(){
             'add_new_item' => 'Add New Program',
             'edit_item' => 'Edit Program',
             'all_items' => 'All Programs',
-            'singular_name' => 'Programs'
+            'singular_name' => 'Program'
         ),
         'menu_icon' => 'dashicons-awards'
     ));
@@ -60,9 +60,25 @@ function university_post_types(){
             'add_new_item' => 'Add New Professor',
             'edit_item' => 'Edit Professor',
             'all_items' => 'All Professors',
-            'singular_name' => 'Professors'
+            'singular_name' => 'Professor'
         ),
         'menu_icon' => 'dashicons-welcome-learn-more'
+    ));
+    // NOTE POST TYPE
+    register_post_type('note', array(
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor'),
+        'public' => false,
+        'show_ui' => true,
+        'show_in_rest' => true,
+        'labels' => array(
+            'name' => 'Notes',
+            'add_new_item' => 'Add New Notes',
+            'edit_item' => 'Edit Notes',
+            'all_items' => 'All Notes',
+            'singular_name' => 'Note'
+        ),
+        'menu_icon' => 'dashicons-welcome-write-blog'
     ));
 }
 
