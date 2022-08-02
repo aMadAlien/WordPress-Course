@@ -151,8 +151,7 @@ function () {
         return _this2.searchField.focus();
       }, 301);
       console.log("our open method just ran!");
-      this.isOverlayOpen = true;
-      return false;
+      this.isOverlayOpen = true; // return false
     } // closes search
 
   }, {
