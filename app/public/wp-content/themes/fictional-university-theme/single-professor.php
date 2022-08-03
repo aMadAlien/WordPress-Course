@@ -29,6 +29,7 @@
                                     )
                                 ));
 
+                                // did someone like this post? - status "no"
                                 $existStatus = 'no';
 
                                 $existQuery = new WP_Query(array(
@@ -43,11 +44,13 @@
                                     )
                                 ));
 
+                                // if someone liked this post - status "yes"
                                 if($existQuery -> found_posts) {
                                     $existStatus = 'yes';
                                 }
 
                             ?>
+                            <!-- data-exists="" => check if a professor has user like already or not -->
                             <span class="like-box" data-exists="<?php echo $existStatus ?>">
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <i class="fa fa-heart" aria-hidden="true"></i>
