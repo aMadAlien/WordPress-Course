@@ -6,6 +6,9 @@
 function university_post_types(){
     // EVENT POST TYPE
     register_post_type('event', array(
+        // allows to create parmision to edit events for other members
+        'capability_type' => 'event',
+        'map_meta_cap' => true,
         // add excerpt field in WordPress settings
         'supports' => array('title', 'editor', 'excerpt'),
         // change 'event' to 'events' in url address
@@ -41,10 +44,11 @@ function university_post_types(){
             'add_new_item' => 'Add New Program',
             'edit_item' => 'Edit Program',
             'all_items' => 'All Programs',
-            'singular_name' => 'Programs'
+            'singular_name' => 'Program'
         ),
         'menu_icon' => 'dashicons-awards'
     ));
+
     // PROFESSOR POST TYPE
     register_post_type('professor', array(
         // add excerpt field in WordPress settings
@@ -57,9 +61,28 @@ function university_post_types(){
             'add_new_item' => 'Add New Professor',
             'edit_item' => 'Edit Professor',
             'all_items' => 'All Professors',
-            'singular_name' => 'Professors'
+            'singular_name' => 'Professor'
         ),
         'menu_icon' => 'dashicons-welcome-learn-more'
+    ));
+
+    // NOTE POST TYPE
+    register_post_type('note', array(
+        'capability_type' => 'note',
+        'map_meta_cap' => true,
+        // add excerpt field in WordPress settings
+        'supports' => array('title', 'editor'),
+        'public' => false,
+        'show_ui' => true,
+        'show_in_rest' => true,
+        'labels' => array(
+            'name' => 'Notes',
+            'add_new_item' => 'Add New Notes',
+            'edit_item' => 'Edit Notes',
+            'all_items' => 'All Notes',
+            'singular_name' => 'Note'
+        ),
+        'menu_icon' => 'dashicons-welcome-write-blog'
     ));
 }
 
