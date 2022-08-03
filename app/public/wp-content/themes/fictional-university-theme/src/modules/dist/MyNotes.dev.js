@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _jquery = _interopRequireDefault(require("jquery"));
+var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -21,28 +21,52 @@ function () {
   function MyNotes() {
     _classCallCheck(this, MyNotes);
 
-    this.events();
+    if (document.querySelector("#my-notes")) {
+      _axios["default"].defaults.headers.common["X-WP-Nonce"] = universityData.nonce;
+      this.myNotes = document.querySelector("#my-notes");
+      this.events();
+    }
   }
 
   _createClass(MyNotes, [{
     key: "events",
     value: function events() {
-      (0, _jquery["default"])("#my-notes").on("click", ".delete-note", this.deleteNote);
-      (0, _jquery["default"])("#my-notes").on("click", ".edit-note", this.editNote.bind(this));
-      (0, _jquery["default"])("#my-notes").on("click", ".update-note", this.updateNote.bind(this));
-      (0, _jquery["default"])(".submit-note").on("click", this.createNote.bind(this));
+      var _this = this;
+
+      this.myNotes.addEventListener("click", function (e) {
+        return _this.clickHandler(e);
+      });
+      document.querySelector(".submit-note").addEventListener("click", function () {
+        return _this.createNote();
+      });
+    }
+  }, {
+    key: "clickHandler",
+    value: function clickHandler(e) {
+      if (e.target.classList.contains("delete-note") || e.target.classList.contains("fa-trash-o")) this.deleteNote(e);
+      if (e.target.classList.contains("edit-note") || e.target.classList.contains("fa-pencil") || e.target.classList.contains("fa-times")) this.editNote(e);
+      if (e.target.classList.contains("update-note") || e.target.classList.contains("fa-arrow-right")) this.updateNote(e);
+    }
+  }, {
+    key: "findNearestParentLi",
+    value: function findNearestParentLi(el) {
+      var thisNote = el;
+
+      while (thisNote.tagName != "LI") {
+        thisNote = thisNote.parentElement;
+      }
+
+      return thisNote;
     } // edit a note
 
   }, {
     key: "editNote",
     value: function editNote(e) {
-      var thisNote = (0, _jquery["default"])(e.target).parents("li");
+      var thisNote = this.findNearestParentLi(e.target);
 
-      if (thisNote.data("state") == "editable") {
-        // make read only
+      if (thisNote.getAttribute("data-state") == "editable") {
         this.makeNoteReadOnly(thisNote);
       } else {
-        // make editable
         this.makeNoteEditable(thisNote);
       }
     }
@@ -50,112 +74,164 @@ function () {
     key: "makeNoteEditable",
     value: function makeNoteEditable(thisNote) {
       // changes "edit" btn to "cancel" one
-      thisNote.find(".edit-note").html('<i class="fa fa-times" aria-hidden="true"></i> Cancel');
-      thisNote.find(".note-title-field, .note-body-field").removeAttr("readonly").addClass("note-active-field");
-      thisNote.find(".update-note").addClass("update-note--visible");
-      thisNote.data("state", "editable");
+      thisNote.querySelector(".edit-note").innerHTML = '<i class="fa fa-times" aria-hidden="true"></i> Cancel';
+      thisNote.querySelector(".note-title-field").removeAttribute("readonly");
+      thisNote.querySelector(".note-body-field").removeAttribute("readonly");
+      thisNote.querySelector(".note-title-field").classList.add("note-active-field");
+      thisNote.querySelector(".note-body-field").classList.add("note-active-field");
+      thisNote.querySelector(".update-note").classList.add("update-note--visible");
+      thisNote.setAttribute("data-state", "editable");
     }
   }, {
     key: "makeNoteReadOnly",
     value: function makeNoteReadOnly(thisNote) {
-      thisNote.find(".edit-note").html('<i class="fa fa-pencil" aria-hidden="true"></i> Edit');
-      thisNote.find(".note-title-field, .note-body-field").attr("readonly", "readonly").removeClass("note-active-field");
-      thisNote.find(".update-note").removeClass("update-note--visible");
-      thisNote.data("state", "cancel");
+      thisNote.querySelector(".edit-note").innerHTML = '<i class="fa fa-pencil" aria-hidden="true"></i> Edit';
+      thisNote.querySelector(".note-title-field").setAttribute("readonly", "true");
+      thisNote.querySelector(".note-body-field").setAttribute("readonly", "true");
+      thisNote.querySelector(".note-title-field").classList.remove("note-active-field");
+      thisNote.querySelector(".note-body-field").classList.remove("note-active-field");
+      thisNote.querySelector(".update-note").classList.remove("update-note--visible");
+      thisNote.setAttribute("data-state", "cancel");
     } // delete a note
 
   }, {
     key: "deleteNote",
     value: function deleteNote(e) {
-      var thisNote = (0, _jquery["default"])(e.target).parents("li");
+      var thisNote, response;
+      return regeneratorRuntime.async(function deleteNote$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              thisNote = this.findNearestParentLi(e.target);
+              _context.prev = 1;
+              _context.next = 4;
+              return regeneratorRuntime.awrap(_axios["default"]["delete"](universityData.root_url + "/wp-json/wp/v2/note/" + thisNote.getAttribute("data-id")));
 
-      _jquery["default"].ajax({
-        beforeSend: function beforeSend(xhr) {
-          xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
-        },
-        url: universityData.root_url + '/wp-json/wp/v2/note/' + thisNote.data('id'),
-        type: 'DELETE',
-        success: function success(response) {
-          // delete immediately
-          thisNote.slideUp();
-          console.log("Congrants");
-          console.log(response);
+            case 4:
+              response = _context.sent;
+              thisNote.style.height = "".concat(thisNote.offsetHeight, "px");
+              setTimeout(function () {
+                thisNote.classList.add("fade-out");
+              }, 20);
+              setTimeout(function () {
+                thisNote.remove();
+              }, 401);
 
-          if (response.userNoteCount < 5) {
-            (0, _jquery["default"])(".note-limit-message").removeClass("active");
+              if (response.data.userNoteCount < 5) {
+                document.querySelector(".note-limit-message").classList.remove("active");
+              }
+
+              _context.next = 14;
+              break;
+
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context["catch"](1);
+              console.log("Sorry");
+
+            case 14:
+            case "end":
+              return _context.stop();
           }
-        },
-        error: function error(response) {
-          console.log("Sorry");
-          console.log(response);
         }
-      });
+      }, null, this, [[1, 11]]);
     } // saves new notes data in wp data base
 
   }, {
     key: "updateNote",
     value: function updateNote(e) {
-      var _this = this;
+      var thisNote, ourUpdatedPost, response;
+      return regeneratorRuntime.async(function updateNote$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              thisNote = this.findNearestParentLi(e.target);
+              ourUpdatedPost = {
+                "title": thisNote.querySelector(".note-title-field").value,
+                "content": thisNote.querySelector(".note-body-field").value
+              };
+              _context2.prev = 2;
+              _context2.next = 5;
+              return regeneratorRuntime.awrap(_axios["default"].post(universityData.root_url + "/wp-json/wp/v2/note/" + thisNote.getAttribute("data-id"), ourUpdatedPost));
 
-      var thisNote = (0, _jquery["default"])(e.target).parents("li");
-      var ourUpdatedPost = {
-        'title': thisNote.find(".note-title-field").val(),
-        'content': thisNote.find(".note-body-field").val()
-      };
+            case 5:
+              response = _context2.sent;
+              this.makeNoteReadOnly(thisNote);
+              _context2.next = 12;
+              break;
 
-      _jquery["default"].ajax({
-        beforeSend: function beforeSend(xhr) {
-          xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
-        },
-        url: universityData.root_url + '/wp-json/wp/v2/note/' + thisNote.data('id'),
-        type: "POST",
-        data: ourUpdatedPost,
-        success: function success(response) {
-          // saves immediately
-          _this.makeNoteReadOnly(thisNote);
+            case 9:
+              _context2.prev = 9;
+              _context2.t0 = _context2["catch"](2);
+              console.log("Sorry");
 
-          console.log("Congrants");
-          console.log(response);
-        },
-        error: function error(response) {
-          console.log("Sorry");
-          console.log(response);
+            case 12:
+            case "end":
+              return _context2.stop();
+          }
         }
-      });
+      }, null, this, [[2, 9]]);
     } // create a new note
 
   }, {
     key: "createNote",
-    value: function createNote(e) {
-      var ourNewPost = {
-        'title': (0, _jquery["default"])(".new-note-title").val(),
-        'content': (0, _jquery["default"])(".new-note-body").val(),
-        'status': 'publish'
-      };
+    value: function createNote() {
+      var ourNewPost, response, finalHeight, newlyCreated;
+      return regeneratorRuntime.async(function createNote$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              ourNewPost = {
+                "title": document.querySelector(".new-note-title").value,
+                "content": document.querySelector(".new-note-body").value,
+                'status': 'publish'
+              };
+              _context3.prev = 1;
+              _context3.next = 4;
+              return regeneratorRuntime.awrap(_axios["default"].post(universityData.root_url + "/wp-json/wp/v2/note/", ourNewPost));
 
-      _jquery["default"].ajax({
-        beforeSend: function beforeSend(xhr) {
-          xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
-        },
-        url: universityData.root_url + '/wp-json/wp/v2/note/',
-        type: "POST",
-        data: ourNewPost,
-        success: function success(response) {
-          (0, _jquery["default"])(".new-note-title, .new-note-body").val('');
-          (0, _jquery["default"])("\n                    <li data-id=\"".concat(response.id, "\">\n                        <input readonly class=\"note-title-field\" value=\"").concat(response.title.raw, "\">\n                        <span class=\"edit-note\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i>Edit</span>\n                        <span class=\"delete-note\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i>Delete</span>\n                        <textarea readonly class=\"note-body-field\">").concat(response.content.raw, "</textarea>\n                        <span class=\"update-note btn btn--blue btn--small\"><i class=\"fa fa-arrow-right\" aria-hidden=\"true\"></i> Save</span>\n                    </li>\n                ")).prependTo("#my-notes").hide().slideDown();
-          console.log("Congrants");
-          console.log(response);
-        },
-        error: function error(response) {
-          // adds the message about the limit
-          if (response.responseText == "You have reached your note limit.") {
-            (0, _jquery["default"])(".note-limit-message").addClass("active");
+            case 4:
+              response = _context3.sent;
+
+              if (response.data != "You have reached your note limit.") {
+                document.querySelector(".new-note-title").value = "";
+                document.querySelector(".new-note-body").value = "";
+                document.querySelector("#my-notes").insertAdjacentHTML("afterbegin", " <li data-id=\"".concat(response.data.id, "\" class=\"fade-in-calc\">\n                        <input readonly class=\"note-title-field\" value=\"").concat(response.data.title.raw, "\">\n                        <span class=\"edit-note\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i> Edit</span>\n                        <span class=\"delete-note\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i> Delete</span>\n                        <textarea readonly class=\"note-body-field\">").concat(response.data.content.raw, "</textarea>\n                        <span class=\"update-note btn btn--blue btn--small\"><i class=\"fa fa-arrow-right\" aria-hidden=\"true\"></i> Save</span>\n                    </li>")); // notice in the above HTML for the new <li> I gave it a class of fade-in-calc which will make it invisible temporarily so we can count its natural height
+
+                // browser needs a specific height to transition to, you can't transition to 'auto' height
+                newlyCreated = document.querySelector("#my-notes li"); // give the browser 30 milliseconds to have the invisible element added to the DOM before moving on
+
+                setTimeout(function () {
+                  finalHeight = "".concat(newlyCreated.offsetHeight, "px");
+                  newlyCreated.style.height = "0px";
+                }, 30); // give the browser another 20 milliseconds to count the height of the invisible element before moving on
+
+                setTimeout(function () {
+                  newlyCreated.classList.remove("fade-in-calc");
+                  newlyCreated.style.height = finalHeight;
+                }, 50); // wait the duration of the CSS transition before removing the hardcoded calculated height from the element so that our design is responsive once again
+
+                setTimeout(function () {
+                  newlyCreated.style.removeProperty("height");
+                }, 450);
+              } else {
+                document.querySelector(".note-limit-message").classList.add("active");
+              }
+
+              _context3.next = 11;
+              break;
+
+            case 8:
+              _context3.prev = 8;
+              _context3.t0 = _context3["catch"](1);
+              console.error(_context3.t0);
+
+            case 11:
+            case "end":
+              return _context3.stop();
           }
-
-          console.log("Sorry");
-          console.log(response);
         }
-      });
+      }, null, null, [[1, 8]]);
     }
   }]);
 
