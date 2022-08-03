@@ -3,10 +3,14 @@
 // imports search-route.php file
 require get_theme_file_path('/includes/search-route.php');
 
-// add "authorName" : "name" into API array
 function university_custom_rest() {
+    // add "authorName" : "name" into API array
     register_rest_field('post', 'authorName', array(
         'get_callback' => function() {return get_the_author();}
+    ));
+    // count number of user notes
+    register_rest_field('note', 'userNoteCount', array(
+        'get_callback' => function() {return count_user_posts(get_current_user_id(), 'note');}
     ));
 }
 
@@ -154,4 +158,30 @@ add_filter('login_headertitle', 'ourLoginTitle');
 
 function ourLoginTitle() {
     return get_bloginfo('name');
+}
+
+
+// force note posts to be private
+// "10" means priority
+// "2" means - we want to work with 2 parameters($data and $postarr)
+add_filter('wp_insert_post_data', 'maleNotePrivate', 10, 2);
+
+function maleNotePrivate($data, $postarr) {
+    if($data['post_type'] == 'note') {
+        // doesn't allow to create more than 5 notes and delete some of them
+        if(count_user_posts(get_current_user_id(), 'note') > 4 AND !$postarr['ID']) {
+            die("You have reached your note limit.");
+        }
+
+        // deletes possible attributes in note field written by users
+        $data['post_content'] = sanitize_textarea_field($data['post_content']);
+        $data['post_title'] = sanitize_text_field($data['post_title']);
+    }
+
+    // gives users notes "private" status
+    if($data['post_type'] == 'note' AND $data['post_status'] != 'trash') {
+        $data['post_status'] = "private";
+    }
+
+    return $data;
 }
