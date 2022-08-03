@@ -48,6 +48,7 @@ function university_post_types(){
         ),
         'menu_icon' => 'dashicons-awards'
     ));
+
     // PROFESSOR POST TYPE
     register_post_type('professor', array(
         // add excerpt field in WordPress settings
@@ -64,8 +65,11 @@ function university_post_types(){
         ),
         'menu_icon' => 'dashicons-welcome-learn-more'
     ));
+
     // NOTE POST TYPE
     register_post_type('note', array(
+        'capability_type' => 'note',
+        'map_meta_cap' => true,
         // add excerpt field in WordPress settings
         'supports' => array('title', 'editor'),
         'public' => false,
