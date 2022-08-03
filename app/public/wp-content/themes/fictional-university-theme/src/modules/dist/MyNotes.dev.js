@@ -30,6 +30,7 @@ function () {
       (0, _jquery["default"])(".delete-note").on("click", this.deleteNote);
       (0, _jquery["default"])(".edit-note").on("click", this.editNote.bind(this));
       (0, _jquery["default"])(".update-note").on("click", this.updateNote.bind(this));
+      (0, _jquery["default"])(".submit-note").on("click", this.createNote.bind(this));
     } // edit a note
 
   }, {
@@ -109,6 +110,35 @@ function () {
           // saves immediately
           _this.makeNoteReadOnly(thisNote);
 
+          console.log("Congrants");
+          console.log(response);
+        },
+        error: function error(response) {
+          console.log("Sorry");
+          console.log(response);
+        }
+      });
+    } // create a new note
+
+  }, {
+    key: "createNote",
+    value: function createNote(e) {
+      var ourNewPost = {
+        'title': (0, _jquery["default"])(".new-note-title").val(),
+        'content': (0, _jquery["default"])(".new-note-body").val(),
+        'status': 'publish'
+      };
+
+      _jquery["default"].ajax({
+        beforeSend: function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
+        },
+        url: universityData.root_url + '/wp-json/wp/v2/note/',
+        type: "POST",
+        data: ourNewPost,
+        success: function success(response) {
+          (0, _jquery["default"])(".new-note-title, .new-note-body").val('');
+          (0, _jquery["default"])('<li>Imagine real data here</li>').prependTo("#my-notes").hide().slideDown();
           console.log("Congrants");
           console.log(response);
         },
