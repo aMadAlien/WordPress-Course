@@ -1,5 +1,6 @@
 <?php
 
+require get_theme_file_path('/includes/like-route.php');
 // imports search-route.php file
 require get_theme_file_path('/includes/search-route.php');
 
