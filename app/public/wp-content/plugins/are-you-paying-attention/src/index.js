@@ -6,8 +6,8 @@ wp.blocks.registerBlockType("ourplugin/are-you-paying-attention", {
     icon: "smiley",
     category: "common",
     attributes: {
-      skyColor: {type: "string"},
-      grassColor: {type: "string"}
+      question: {type: "string"},
+      answers: {type: "array", default: ["red", "green", "bfdbzdcv"]}
     },
     edit: EditComponent,
     save: function (props) {
@@ -16,36 +16,51 @@ wp.blocks.registerBlockType("ourplugin/are-you-paying-attention", {
   })
 
 function EditComponent (props) {
-  function updateSkyColor(event) {
-    props.setAttributes({skyColor: event.target.value})
+  // saves the question text
+  function updateQuestion(value) {
+    props.setAttributes({question: value})
   }
-
-  function updateGrassColor(event) {
-    props.setAttributes({grassColor: event.target.value})
+  // deletes the line of answer
+  function deleteAnswer(indexToDelete) {
+    const newAnswers = props.attributes.answers.filter(function(x, index) {
+      return index != indexToDelete
+    })
+    props.setAttributes({answers: newAnswers})
   }
 
   return (
     <div className="paying-attention-edit-block">
       {/* QUESTION */}
-      <TextControl label="Question:" style={{fontSize: "20px"}} />
+      <TextControl label="Question:" value={props.attributes.question} onChange={updateQuestion} style={{fontSize: "20px"}} />
       <p style={{fontSize: "13px", margin: "20px 0 8px 0"}}>Answers:</p>
-      <Flex>
-        {/* ANSWER FIELD */}
-        <FlexBlock>
-          <TextControl />
-        </FlexBlock>
-        {/* ICON */}
-        <FlexItem>
-          <Button>
-            <Icon className="mark-as-correct" icon="star-empty" />
-          </Button>
-        </FlexItem>
-        {/* DELETE BTN */}
-        <FlexItem>
-          <Button isLink className="attention-delete">Delete</Button>
-        </FlexItem>
-      </Flex>
-      <Button isPrimary>Add another answer</Button>
+      {props.attributes.answers.map(function (answer, index) {
+        return (
+          <Flex>
+            {/* ANSWER FIELD */}
+            <FlexBlock>
+              <TextControl value={answer} onChange={newValue => {
+                const newAnswers = props.attributes.answers.concat([])
+                newAnswers[index] = newValue
+                props.setAttributes({answers: newAnswers})
+              }} />
+            </FlexBlock>
+            {/* ICON */}
+            <FlexItem>
+              <Button>
+                <Icon className="mark-as-correct" icon="star-empty" />
+              </Button>
+            </FlexItem>
+            {/* DELETE BTN */}
+            <FlexItem>
+              <Button isLink className="attention-delete"  onClick={() => deleteAnswer(index)}>Delete</Button>
+            </FlexItem>
+          </Flex>
+        )
+      })}
+      {/* the btn adds new line of answer */}
+      <Button isPrimary onClick={() => {
+        props.setAttributes({answers: props.attributes.answers.concat([""])})
+      }}>Add another answer</Button>
     </div>
   );
 }
