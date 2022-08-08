@@ -41,8 +41,8 @@ function Quiz(props) {
     }
 
     return (
-        // style property changes the bgc on the frontend
-        <div className="paying-attention-frontend" style={{backgroundColor: props.bgColor}}>
+        // style property changes the bgc and text-alignment on the frontend
+        <div className="paying-attention-frontend" style={{backgroundColor: props.bgColor, textAlign: props.theAlignment}}>
             {/* QUIZ */}
             <p>{props.question}</p>
             <ul>

@@ -16185,7 +16185,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_color__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-color */ "./node_modules/react-color/es/index.js");
 
 
- // menu block editor into post editor
+ // InspectorControls => allows to work with menu block editor into post editor
+// BlockControls => allows to work with drop down menu
+// AlignmentToolbar => allows to change the alignment
 
  // color picker template (from chrome) 
 
@@ -16229,6 +16231,21 @@ wp.blocks.registerBlockType("ourplugin/are-you-paying-attention", {
     bgColor: {
       type: "srting",
       default: "#ebebeb"
+    },
+    theAlignment: {
+      type: "string",
+      default: "left"
+    }
+  },
+  description: "The description for my first menu block editor.",
+  // block preview
+  example: {
+    attributes: {
+      question: "What is my name?",
+      answers: ['Meowsalot', 'Barksalot', 'Iren', 'Purrsloud'],
+      correctAnswer: 3,
+      bgColor: "#D8DFFC",
+      theAlignment: "center"
     }
   },
   edit: EditComponent,
@@ -16274,7 +16291,12 @@ function EditComponent(props) {
       style: {
         backgroundColor: props.attributes.bgColor
       }
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.AlignmentToolbar, {
+      value: props.attributes.theAlignment,
+      onChange: x => props.setAttributes({
+        theAlignment: x
+      })
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
       title: "Background Color",
       initialOpen: true
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_color__WEBPACK_IMPORTED_MODULE_4__.ChromePicker, {

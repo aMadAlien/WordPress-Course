@@ -1,7 +1,9 @@
 import "./index.scss"
 import {TextControl, Flex, FlexBlock, FlexItem, Button, Icon, PanelBody, PanelRow} from "@wordpress/components"
-// menu block editor into post editor
-import {InspectorControls} from "@wordpress/block-editor"
+// InspectorControls => allows to work with menu block editor into post editor
+// BlockControls => allows to work with drop down menu
+// AlignmentToolbar => allows to change the alignment
+import {InspectorControls, BlockControls, AlignmentToolbar} from "@wordpress/block-editor"
 // color picker template (from chrome) 
 import {ChromePicker} from "react-color"
 
@@ -33,7 +35,19 @@ wp.blocks.registerBlockType("ourplugin/are-you-paying-attention", {
       question: {type: "string"},
       answers: {type: "array", default: [""]},
       correctAnswer: {type: "number", default: undefined},
-      bgColor: {type: "srting", default: "#ebebeb"}
+      bgColor: {type: "srting", default: "#ebebeb"},
+      theAlignment: {type: "string", default: "left"}
+    },
+    description: "The description for my first menu block editor.",
+    // block preview
+    example: {
+      attributes: {
+        question: "What is my name?",
+        answers: ['Meowsalot', 'Barksalot', 'Iren', 'Purrsloud'],
+        correctAnswer: 3,
+        bgColor: "#D8DFFC",
+        theAlignment: "center"
+      }
     },
     edit: EditComponent,
     save: function (props) {
@@ -67,6 +81,10 @@ function EditComponent (props) {
   return (
     // style property changes bgc of the block in post editor
     <div className="paying-attention-edit-block" style={{backgroundColor: props.attributes.bgColor}}>
+      {/* drop down menu - alignment */}
+      <BlockControls>
+        <AlignmentToolbar value={props.attributes.theAlignment} onChange={x => props.setAttributes({theAlignment: x})} />
+      </BlockControls>
       {/* color block into editor */}
       <InspectorControls>
         <PanelBody title="Background Color" initialOpen={true}>
