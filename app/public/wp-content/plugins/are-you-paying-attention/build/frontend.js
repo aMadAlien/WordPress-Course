@@ -133,14 +133,18 @@ __webpack_require__.r(__webpack_exports__);
 const divsToUpdate = document.querySelectorAll(".paying-attention-update-me"); // renders the block (quiz)
 
 divsToUpdate.forEach(function (div) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default().render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Quiz, null), div);
+  // retrieves the data from the element
+  const data = JSON.parse(div.querySelector("pre").innerHTML);
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default().render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Quiz, data), div);
   div.classList.remove("paying-attention-update-me");
 }); // contains the content of the block (quiz)
 
-function Quiz() {
+function Quiz(props) {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "paying-attention-frontend"
-  }, "react says hello");
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, props.question), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, props.answers.map(function (answer) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, answer);
+  })));
 }
 })();
 
