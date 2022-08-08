@@ -3,7 +3,8 @@ import {TextControl, Flex, FlexBlock, FlexItem, Button, Icon, PanelBody, PanelRo
 // InspectorControls => allows to work with menu block editor into post editor
 // BlockControls => allows to work with drop down menu
 // AlignmentToolbar => allows to change the alignment
-import {InspectorControls, BlockControls, AlignmentToolbar} from "@wordpress/block-editor"
+// useBlockProps => uses block properties, and we use it for our blocks
+import {InspectorControls, BlockControls, AlignmentToolbar, useBlockProps} from "@wordpress/block-editor"
 // color picker template (from chrome) 
 import {ChromePicker} from "react-color"
 
@@ -56,6 +57,12 @@ wp.blocks.registerBlockType("ourplugin/are-you-paying-attention", {
   })
 
 function EditComponent (props) {
+  const blockProps = useBlockProps({
+    // style property changes bgc of the block in post editor
+    className: "paying-attention-edit-block",
+    style: {backgroundColor: props.attributes.bgColor}
+  })
+
   // saves the question text
   function updateQuestion(value) {
     props.setAttributes({question: value})
@@ -79,8 +86,7 @@ function EditComponent (props) {
   }
 
   return (
-    // style property changes bgc of the block in post editor
-    <div className="paying-attention-edit-block" style={{backgroundColor: props.attributes.bgColor}}>
+    <div {...blockProps}>
       {/* drop down menu - alignment */}
       <BlockControls>
         <AlignmentToolbar value={props.attributes.theAlignment} onChange={x => props.setAttributes({theAlignment: x})} />

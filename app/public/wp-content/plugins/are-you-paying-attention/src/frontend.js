@@ -2,6 +2,10 @@ import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import "./frontend.scss"
 
+// wait when the DOM is loaded
+document.addEventListener("DOMContentLoaded", function () {
+
+// element in frontend that displays the quiz
 const divsToUpdate = document.querySelectorAll(".paying-attention-update-me")
 
 // renders the block (quiz)
@@ -92,3 +96,6 @@ function Quiz(props) {
         </div>
     )
 }
+})
+
+
