@@ -9,11 +9,21 @@
 if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once plugin_dir_path(__FILE__) . 'includes/generateProfessorHTML.php';
+require_once plugin_dir_path(__FILE__) . 'includes/relatedPostsHTML.php';
 
 class FeaturedProfessor {
   function __construct() {
     add_action('init', [$this, 'onInit']);
     add_action('rest_api_init', [$this, 'profHtml']);
+    add_filter('the_content', [$this, 'addRelatedPosts']);
+  }
+
+  // adds a list of related post under professor content in a professor page
+  function addRelatedPosts($content) {
+    if (is_singular('professor') && in_the_loop() && is_main_query()) {
+      return $content . relatedPostsHTML(get_the_id());
+    }
+    return $content;
   }
 
   function profHtml() {
