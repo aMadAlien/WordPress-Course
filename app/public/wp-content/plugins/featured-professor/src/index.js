@@ -21,15 +21,37 @@ function EditComponent(props) {
   const [thePreview, setThePreview] = useState("")
 
   useEffect(() => {
-    async function  go() {
-      const response = await apiFetch({
-        path: `/featuredProfessor/v1/getHTML?profId=${props.attributes.profId}`,
-        method: "GET"
-      })
-      setThePreview(response)
+    // check if a professor is selected and displays its layout
+    if (props.attributes.profId) {
+      upadateTheMeta()
+      async function  go() {
+        const response = await apiFetch({
+          path: `/featuredProfessor/v1/getHTML?profId=${props.attributes.profId}`,
+          method: "GET"
+        })
+        setThePreview(response)
+      }
+      go()
     }
-    go()
   }, [props.attributes.profId])
+
+  useEffect(() => {
+    return () => {
+      upadateTheMeta()
+    }
+  }, [])
+
+  function upadateTheMeta() {
+    const profsForMeta = wp.data.select("core/block-editor")
+      .getBlocks()
+      .filter(x => x.name == "ourplugin/featured-professor")
+      .map(x => x.attributes.profId)
+      .filter((x, index, arr) => {
+        return arr.indexOf(x) == index
+      })
+    console.log(profsForMeta);
+    wp.data.dispatch("core/editor").editPost({meta: {featuredprofessor: profsForMeta}})
+  }
 
   // contains info about all professors
   const allProfs = useSelect(select => {
