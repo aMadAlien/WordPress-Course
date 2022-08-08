@@ -21,7 +21,7 @@ function generateProfessorHTML($id) {
                     $relatedPrograms = get_field('related_programs');
                     // if a professor has 1 and more programs:
                     if ($relatedPrograms) { ?>
-                        <p>Name teaches: 
+                        <p><?php echo wp_strip_all_tags(get_the_title()); ?> teaches: 
                             <!-- dispalys programs title -->
                             <?php foreach($relatedPrograms as $key => $program) {
                                 echo get_the_title($program);
