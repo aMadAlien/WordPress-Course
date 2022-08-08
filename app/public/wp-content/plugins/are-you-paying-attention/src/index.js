@@ -1,7 +1,11 @@
 import "./index.scss"
-import {TextControl, Flex, FlexBlock, FlexItem, Button, Icon} from "@wordpress/components"
+import {TextControl, Flex, FlexBlock, FlexItem, Button, Icon, PanelBody, PanelRow} from "@wordpress/components"
+// menu block editor into post editor
+import {InspectorControls} from "@wordpress/block-editor"
+// color picker template (from chrome) 
+import {ChromePicker} from "react-color"
 
-// doesn't allow to save the page while epmty fields exist
+// doesn't allow to save the page while epmty fields exist and allows if visa versa
 (function() {
   let locked = false
 
@@ -28,7 +32,8 @@ wp.blocks.registerBlockType("ourplugin/are-you-paying-attention", {
     attributes: {
       question: {type: "string"},
       answers: {type: "array", default: [""]},
-      correctAnswer: {type: "number", default: undefined}
+      correctAnswer: {type: "number", default: undefined},
+      bgColor: {type: "srting", default: "#ebebeb"}
     },
     edit: EditComponent,
     save: function (props) {
@@ -60,7 +65,16 @@ function EditComponent (props) {
   }
 
   return (
-    <div className="paying-attention-edit-block">
+    // style property changes bgc of the block in post editor
+    <div className="paying-attention-edit-block" style={{backgroundColor: props.attributes.bgColor}}>
+      {/* color block into editor */}
+      <InspectorControls>
+        <PanelBody title="Background Color" initialOpen={true}>
+          <PanelRow>
+            <ChromePicker color={props.attributes.bgColor} onChangeComplete={x => props.setAttributes({bgColor: x.hex})} disableAlpha={true} />
+          </PanelRow>
+        </PanelBody>
+      </InspectorControls>
       {/* QUESTION */}
       <TextControl label="Question:" value={props.attributes.question} onChange={updateQuestion} style={{fontSize: "20px"}} />
       <p style={{fontSize: "13px", margin: "20px 0 8px 0"}}>Answers:</p>

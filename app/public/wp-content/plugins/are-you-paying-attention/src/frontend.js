@@ -41,7 +41,8 @@ function Quiz(props) {
     }
 
     return (
-        <div className="paying-attention-frontend">
+        // style property changes the bgc on the frontend
+        <div className="paying-attention-frontend" style={{backgroundColor: props.bgColor}}>
             {/* QUIZ */}
             <p>{props.question}</p>
             <ul>
