@@ -48,6 +48,7 @@ function EditComponent (props) {
     })
     props.setAttributes({answers: newAnswers})
 
+    // check if the correct answer exists
     if(indexToDelete == props.attributes.correctAnswer) {
       props.setAttributes({correctAnswer: undefined})
     }
