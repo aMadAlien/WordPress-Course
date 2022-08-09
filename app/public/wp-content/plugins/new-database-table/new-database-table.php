@@ -15,12 +15,33 @@ class PetAdoptionTablePlugin {
     $this->charset = $wpdb->get_charset_collate();
     $this->tablename = $wpdb->prefix . "pets";
 
+    // activates the plugin
     add_action('activate_new-database-table/new-database-table.php', array($this, 'onActivate'));
+    // creates the lines in db
     // add_action('admin_head', array($this, 'populateFast'));
+    // adds to admin capability to add new pet(line in db)
+    add_action('admin_post_createpet', array($this, 'createPet'));
+    add_action('admin_post_nopriv_createpet', array($this, 'createPet'));
+    // enqueues scripts
     add_action('wp_enqueue_scripts', array($this, 'loadAssets'));
     add_filter('template_include', array($this, 'loadTemplate'), 99);
   }
 
+  // creates a new pet
+  function createPet() {
+    if (current_user_can('administrator')) {
+      // func is into generatePet.php
+      $pet = generatePet();
+      $pet['petname'] = sanitize_text_field($_POST['incomingpetname']);
+      global $wpdb;
+      $wpdb->insert($this->tablename, $pet);
+      wp_redirect(site_url('/pet-adoption'));
+    } else {
+      wp_redirect(site_url());
+    }
+  }
+
+  // activates and displays the table
   function onActivate() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta("CREATE TABLE $this->tablename (
