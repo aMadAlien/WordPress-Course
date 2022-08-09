@@ -190,12 +190,21 @@ function maleNotePrivate($data, $postarr) {
     return $data;
 }
 
-// displays the banner block
-function bannerBlock() {
-    wp_register_script('bannerBlockScript', get_stylesheet_directory_uri() . '/build/banner.js', array('wp-blocks', 'wp-editor'));
-    register_block_type("ourblocktheme/banner", array(
-        'editor_script' => 'bannerBlockScript'
-    ));
+// displays blocks
+class JSXBlock {
+    function __construct($name) {
+        $this->name = $name;
+        add_action('init', [$this, 'onInit']);
+    }
+
+    function onInit() {
+        wp_register_script($this->name, get_stylesheet_directory_uri() . "/build/{$this->name}.js", array('wp-blocks', 'wp-editor'));
+        register_block_type("ourblocktheme/{$this->name}", array(
+            'editor_script' => $this->name
+        ));    
+    }
 }
 
-add_action('init', 'bannerBlock');
+// invoke banner and genericheading blocks
+new JSXBlock('banner');
+new JSXBlock('genericheading');
