@@ -105,6 +105,15 @@ __webpack_require__.r(__webpack_exports__);
 
 wp.blocks.registerBlockType("ourblocktheme/banner", {
   title: "Banner",
+  supports: {
+    align: ["full"]
+  },
+  attributes: {
+    align: {
+      type: "string",
+      default: "full"
+    }
+  },
   edit: EditComponent,
   save: SaveComponent
 });
