@@ -205,6 +205,7 @@ class JSXBlock {
     }
 }
 
-// invoke banner and genericheading blocks
+// invoke banner and generic heading and btn blocks
 new JSXBlock('banner');
 new JSXBlock('genericheading');
+new JSXBlock('genericbutton');
