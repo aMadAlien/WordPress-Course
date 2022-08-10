@@ -58,7 +58,19 @@
 
         <!-- THE PAGE CONTENT -->
         <div class="generic-content">
-            <?php the_content(); ?>
+            <?php the_content(); 
+            
+            $plusV = sanitize_text_field(get_query_var('plus'));
+
+            if ($plusV == '4') {
+                echo '<p>RIGHT</p>';
+            }
+            ?>
+            <form method="get">
+                <p>2 + 2</p>
+                <input name="plus" placeholder="plus">
+                <button>Submit</button>
+            </form>
         </div>
     </div>
 

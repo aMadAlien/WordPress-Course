@@ -1,5 +1,12 @@
 <?php
 
+function universitiQueryVars($vars) {
+    $vars[] = 'plus';
+    return $vars;
+}
+
+add_filter('query_vars', 'universitiQueryVars');
+
 require get_theme_file_path('/includes/like-route.php');
 // imports search-route.php file
 require get_theme_file_path('/includes/search-route.php');
