@@ -60,12 +60,13 @@ function EditComponent(props) {
                 </PanelRow>
             </PanelBody>
         </InspectorControls>
-        {/* MAIN SCREEN (in backend) */}
-        <div className="page-banner">
-            <div className="page-banner__bg-image" style={{backgroundImage: `url('${props.attributes.imgURL}')`}}></div>
-            <div className="page-banner__content container t-center c-white">
-                {/* allows nest only generic heading and btn */}
-                <InnerBlocks allowedBlocks={["ourblocktheme/genericheading", "ourblocktheme/genericbutton"]} />
+        {/*  SLIDESHOW (in editor) */}
+        <div className="hero-slider__slide" style={{backgroundImage: `url('${props.attributes.imgURL}')`}}>
+            <div className="hero-slider__interior container">
+                <div className="hero-slider__overlay t-center">
+                    {/* allows nest only generic heading and btn */}
+                    <InnerBlocks allowedBlocks={["ourblocktheme/genericheading", "ourblocktheme/genericbutton"]} />
+                </div>
             </div>
         </div>
         </>
