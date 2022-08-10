@@ -274,3 +274,16 @@ new JSXBlock('genericbutton');
 // invoke slide-show and slides blocks
 new JSXBlock('slideshow', true);
 new JSXBlock('slide', true, ['themeimagepath' => get_theme_file_uri('/images/')]);
+
+
+function myallowedblocks($allowed_block_types, $editor_context) {
+    // if you are on a page/post editor => you may not use header and footer blocks
+    if (!empty($editor_context->post)) {
+        return $allowed_block_types;
+    }
+
+    // if you are on the front page editor => you may use header and footer blocks
+    return array('ourblocktheme/header', 'ourblocktheme/footer');
+}
+
+add_filter('allowed_block_types_all', 'myallowedblocks', 10, 2);
