@@ -1,6 +1,11 @@
 <!-- TEMPLATE FOR SLIDE IN FRONTEND -->
 
 <?php
+
+if ($attributes['themeimage']) {
+    $attributes['imgURL'] = get_theme_file_uri('/images/' . $attributes['themeimage']);
+}
+
 // renders img in frontend
 if (!$attributes['imgURL']) {
     $attributes['imgURL'] = get_theme_file_uri('/images/library-hero.jpg');
