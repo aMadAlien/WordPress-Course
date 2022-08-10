@@ -1,0 +1,3 @@
+<!-- TEMPLATE FOR SLIDE IN FRONTEND -->
+
+<h1>slide</h1>
